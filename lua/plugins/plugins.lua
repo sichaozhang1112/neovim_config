@@ -67,6 +67,15 @@ return require('packer').startup(function(use)
 			'nvim-lualine/lualine.nvim',	-- 状态栏
 			requires = { 'kyazdani42/nvim-web-devicons', opt = true }	-- 状态栏图标
 	}
+	
+	-- git blame
+	use { 'f-person/git-blame.nvim' }
+
+	-- toggle terminal
+	use {"akinsho/toggleterm.nvim", tag = '*'}
+
+	-- doxygen
+	use { "vim-scripts/DoxygenToolkit.vim" }
 
     -- Automatically set up your configuration after cloning packer.nvim
     -- Put this at the end after all plugins
