@@ -1,5 +1,7 @@
+-- core
 require("core.keymaps")
 require("core.basic")
+-- plugins
 require("plugins.plugins")
 require("plugins.telescope")
 require("plugins.colorscheme")
@@ -12,3 +14,7 @@ require("plugins.lualine")
 require("plugins.comment")
 require("plugins.gitblame")
 require("plugins.toggleterm")
+require("plugins.winbar")
+require("plugins.nvim-treesitter")
+require("plugins.bufferline")
+require("plugins.gps")

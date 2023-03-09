@@ -1,4 +1,3 @@
-
 local ensure_packer = function()
     local fn = vim.fn
     local install_path = fn.stdpath('data')..'/site/pack/packer/start/packer.nvim'
@@ -37,6 +36,12 @@ return require('packer').startup(function(use)
         tag = 'nightly' -- optional, updated every week. (see issue #1193)
     }
 
+    -- nvim tree sitter
+    use {
+        'nvim-treesitter/nvim-treesitter',
+        run = ':TSUpdate'
+    }
+
     -- lsp配置
 	use {
 		"williamboman/mason.nvim",
@@ -67,15 +72,33 @@ return require('packer').startup(function(use)
 			'nvim-lualine/lualine.nvim',	-- 状态栏
 			requires = { 'kyazdani42/nvim-web-devicons', opt = true }	-- 状态栏图标
 	}
-	
-	-- git blame
-	use { 'f-person/git-blame.nvim' }
 
-	-- toggle terminal
-	use {"akinsho/toggleterm.nvim", tag = '*'}
+    -- git blame
+    use { 'f-person/git-blame.nvim' }
 
-	-- doxygen
-	use { "vim-scripts/DoxygenToolkit.vim" }
+    -- toggle terminal
+    use {"akinsho/toggleterm.nvim", tag = '*'}
+
+    -- doxygen
+    use { "vim-scripts/DoxygenToolkit.vim" }
+
+    -- winbar
+    use {'fgheng/winbar.nvim'}
+
+    -- bufferline
+    use {'akinsho/bufferline.nvim', tag = "v3.*", requires = 'nvim-tree/nvim-web-devicons'}
+
+    -- nvim gps
+    use {
+        "SmiteshP/nvim-gps",
+        requires = "nvim-treesitter/nvim-treesitter"
+    }
+
+    -- nvim navic
+    use {
+        "SmiteshP/nvim-navic",
+        requires = "neovim/nvim-lspconfig"
+    }
 
     -- Automatically set up your configuration after cloning packer.nvim
     -- Put this at the end after all plugins
