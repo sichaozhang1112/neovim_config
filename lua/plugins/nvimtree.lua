@@ -29,8 +29,8 @@ require("nvim-tree").setup({
                         glyphs = {
                                 bookmark = " ",
                                 folder = {
-                                        arrow_closed = "x",
-                                        arrow_open = "o",
+                                        arrow_closed = "+",
+                                        arrow_open = "-",
                                 },
                                 git = {
                                         unstaged = "✗",
