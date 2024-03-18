@@ -41,7 +41,7 @@ require("formatter").setup({
 		cpp = {
 			function()
 				return {
-					exe = "clang-format-4.0",
+					exe = "clang-format",
 					args = { "-assume-filename=", vim.fn.shellescape(vim.api.nvim_buf_get_name(0)), "--style=file" },
 					stdin = true,
 				}
