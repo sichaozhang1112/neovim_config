@@ -44,6 +44,39 @@ return {
 			-- You may want these if you stick with the opinionated "<C-a>" and "<C-x>" above — otherwise consider "<leader>o…".
 			vim.keymap.set("n", "+", "<C-a>", { desc = "Increment under cursor", noremap = true })
 			vim.keymap.set("n", "-", "<C-x>", { desc = "Decrement under cursor", noremap = true })
+
+			-- Ensure opencode is closed/cleaned up when exiting Neovim (prevents "job is running" on :qa/:xa)
+			local aug = vim.api.nvim_create_augroup("OpencodeAutoClose", { clear = true })
+			vim.api.nvim_create_autocmd("VimLeavePre", {
+				group = aug,
+				callback = function()
+					local ok, opencode = pcall(require, "opencode")
+					if not ok or type(opencode) ~= "table" then
+						return
+					end
+
+					-- Helper to safely call functions on the module if they exist.
+					local function try_call(name, ...)
+						local fn = opencode[name]
+						if type(fn) == "function" then
+							pcall(fn, ...)
+							return true
+						end
+						return false
+					end
+
+					-- Try common cleanup APIs/operators/plugins may expose.
+					-- Prefer explicit session commands (used elsewhere in this config).
+					pcall(opencode.command, "session.close")
+					pcall(opencode.command, "session.stop")
+					pcall(opencode.command, "session.quit")
+					-- Try direct module functions if available.
+					try_call("close")
+					try_call("stop")
+					try_call("shutdown")
+					try_call("kill")
+				end,
+			})
 		end,
 	},
 }
