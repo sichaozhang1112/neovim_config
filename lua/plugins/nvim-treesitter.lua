@@ -2,6 +2,7 @@ return {
 	-- nvim tree sitter
 	{
 		"nvim-treesitter/nvim-treesitter",
+		enabled = false,
 		build = ":TSUpdate",
 	},
 	require("nvim-treesitter.configs").setup({

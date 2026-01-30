@@ -2,6 +2,8 @@ return {
 	-- toggle terminal
 	{
 		"akinsho/toggleterm.nvim",
+		-- Disabled by user request
+		enabled = false,
 		version = "*",
 		config = function()
 			require("toggleterm").setup({

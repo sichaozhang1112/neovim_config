@@ -4,7 +4,7 @@ return {
 		"fgheng/winbar.nvim",
 		config = function()
 			require("winbar").setup({
-				enabled = true, -- 是否启动winbar
+				enabled = false, -- 是否启动winbar
 
 				show_file_path = true, -- 是否显示文件路径
 				show_symbols = true, -- 是否显示函数标签
