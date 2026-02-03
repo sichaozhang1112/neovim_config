@@ -160,18 +160,27 @@ return {
 			-- vim.api.nvim_buf_set_keymap(bufnr, "n", "gn", "<cmd>lua vim.diagnostic.goto_next()<CR>", {silent = true, noremap = true})
 		end
 
-		-- Set up lspconfig.
-		-- Replace <YOUR_LSP_SERVER> with each lsp server you've enabled.
-		local capabilities = require("cmp_nvim_lsp").default_capabilities()
-		require("lspconfig").clangd.setup({
-			capabilities = capabilities,
-			on_attach = function(_, bufnr)
-				set_keymap(bufnr)
-			end,
-		})
+        -- Set up lspconfig.
+        -- Replace <YOUR_LSP_SERVER> with each lsp server you've enabled.
+        local capabilities = require("cmp_nvim_lsp").default_capabilities()
 
-		require("lspconfig").pyright.setup({
-			capabilities = capabilities,
-		})
+        -- common on_attach: set keymaps and attach navic if server provides document symbols
+        local on_attach = function(client, bufnr)
+            set_keymap(bufnr)
+            local ok, navic = pcall(require, "nvim-navic")
+            if ok and client.server_capabilities and client.server_capabilities.documentSymbolProvider then
+                navic.attach(client, bufnr)
+            end
+        end
+
+        require("lspconfig").clangd.setup({
+            capabilities = capabilities,
+            on_attach = on_attach,
+        })
+
+        require("lspconfig").pyright.setup({
+            capabilities = capabilities,
+            on_attach = on_attach,
+        })
 	end,
 }

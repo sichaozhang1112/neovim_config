@@ -2,9 +2,9 @@ return {
 	-- winbar
 	{
 		"fgheng/winbar.nvim",
-		config = function()
-			require("winbar").setup({
-				enabled = false, -- 是否启动winbar
+        config = function()
+            require("winbar").setup({
+                enabled = true, -- 是否启动winbar
 
 				show_file_path = true, -- 是否显示文件路径
 				show_symbols = true, -- 是否显示函数标签
@@ -24,7 +24,7 @@ return {
 				},
 
 				-- 关闭winbar的窗口
-				exclude_filetype = {
+                exclude_filetype = {
 					"help",
 					"startify",
 					"dashboard",
@@ -38,8 +38,15 @@ return {
 					"spectre_panel",
 					"toggleterm",
 					"qf",
-				},
-			})
-		end,
+                },
+            })
+            -- Try to show navic symbols in winbar when available
+            local ok, navic = pcall(require, "nvim-navic")
+            if ok then
+                -- attach navic when LSP attaches; lsp.lua will also attach navic per buffer
+                -- but ensure navic is available in winbar
+                -- winbar.nvim will query navic itself if configured; no extra wiring needed here
+            end
+        end,
 	},
 }

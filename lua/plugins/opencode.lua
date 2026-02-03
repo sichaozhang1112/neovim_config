@@ -56,25 +56,47 @@ return {
 					end
 
 					-- Helper to safely call functions on the module if they exist.
-					local function try_call(name, ...)
-						local fn = opencode[name]
+					-- Accept either a function reference or a key name on the module.
+					local function try_call(fn_or_name, ...)
+						local fn = fn_or_name
+						if type(fn_or_name) == "string" then
+							fn = opencode[fn_or_name]
+						end
 						if type(fn) == "function" then
+							-- pcall to avoid surfacing plugin errors during exit
 							pcall(fn, ...)
 							return true
 						end
 						return false
 					end
 
+					-- pcall wrapper that suppresses noisy errors that can occur during
+					-- Neovim shutdown (e.g. jobs still running or missing autocommands).
+					local function safe_pcall(fn, ...)
+						local ok, res = pcall(fn, ...)
+						if ok then
+							return true, res
+						end
+						local msg = tostring(res or "")
+						-- Ignore known, non-actionable errors during exit.
+						if msg:match("E948") or msg:match("E676") then
+							return false, nil
+						end
+						-- Log other errors at DEBUG level so they don't disturb exit.
+						vim.notify("opencode cleanup error: " .. msg, vim.log.levels.DEBUG, { title = "opencode" })
+						return false, nil
+					end
+
 					-- Try common cleanup APIs/operators/plugins may expose.
 					-- Prefer explicit session commands (used elsewhere in this config).
-					pcall(opencode.command, "session.close")
-					pcall(opencode.command, "session.stop")
-					pcall(opencode.command, "session.quit")
+					safe_pcall(try_call, opencode.command, "session.close")
+					safe_pcall(try_call, opencode.command, "session.stop")
+					safe_pcall(try_call, opencode.command, "session.quit")
 					-- Try direct module functions if available.
-					try_call("close")
-					try_call("stop")
-					try_call("shutdown")
-					try_call("kill")
+					safe_pcall(try_call, "close")
+					safe_pcall(try_call, "stop")
+					safe_pcall(try_call, "shutdown")
+					safe_pcall(try_call, "kill")
 				end,
 			})
 		end,

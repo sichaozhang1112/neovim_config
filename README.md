@@ -77,7 +77,7 @@ Several plugins require external binaries or language servers. The common ones u
 - stylua — Lua formatter (used by `formatter.nvim`). https://github.com/JohnnyMorganz/StyLua
 - clang-format — C/C++ formatter
 - clangd — C/C++ LSP server
-- pyright — Python LSP server (or use `pylsp`/`pyright`) 
+- pyright — Python LSP server (or use `pylsp`/`pyright`)
 - busted — Lua test runner (if you add tests)
 - luacheck — Lua linter
 
@@ -95,7 +95,6 @@ Disabled plugins & rationale 🔒
 - **Nvim-tree** — `nvim-tree/nvim-tree.lua` (disabled by default): Snacks + custom keymaps cover explorer-like actions and project navigation in a way that fits this config's workflow. Nvim-tree is disabled to avoid maintaining two different file-explorer paradigms.
 - **Treesitter** — `nvim-treesitter/nvim-treesitter` (disabled by default): Treesitter provides advanced highlighting and parsing but requires a build step and external parser installs. It's optional here to keep a minimal, fast startup for users who don't need those features out of the box.
 - **Avante** — `yetone/avante.nvim` (disabled by default): Avante is a workspace AI/assistant plugin that pulls in optional providers (Copilot/OpenAI) and additional dependencies. It's disabled by default to avoid loading AI integrations and their background services unless you explicitly opt in.
-- **Navic & GPS** — `SmiteshP/nvim-navic` & `SmiteshP/nvim-gps` (disabled by default): These are small navigation/status helpers that depend on LSP information and optional setup. They are left disabled to keep startup hooks and UI surface minimal; enable them if you want breadcrumb-like location/status features in your statusline or winbar.
 
 How to enable a plugin
 - Edit the plugin spec under `lua/plugins/` (find the file for the plugin, e.g. `lua/plugins/telescope.lua` or the file where the plugin is declared) and set `enabled = true` in the returned table, or remove the `enabled = false` line.
